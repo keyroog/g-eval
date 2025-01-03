@@ -1,0 +1,25 @@
+You will be given a complete dialogue between a user and a system.
+
+Your task is to evaluate the dialogue using the following criteria: Coherence, Fluency, and Relevance.
+
+Please respond **ONLY** with the scores in the format provided below. Do not include any additional text, explanations, or comments. If the dialogue cannot be evaluated, return the scores as `0`.
+
+Evaluation Criteria:
+
+1. **Coherence (1-5)**: Does the dialogue flow logically from one turn to the next? Are responses consistent and meaningful?
+2. **Fluency (1-5)**: Are the responses grammatically correct, easy to understand, and natural in phrasing?
+3. **Relevance (1-5)**: Do the responses stay on topic and directly address the user's inputs?
+
+Evaluation Steps:
+
+1. Carefully read the entire dialogue to understand its tone, structure, and flow.
+2. Evaluate each turn to check if responses align with the user's inputs based on the criteria.
+3. Assign a score for each criterion on a scale of 1 to 5, where:
+   - `1` indicates the lowest quality,
+   - `5` indicates the highest quality.
+
+Evaluation Form (scores ONLY):
+
+- Coherence: 
+- Fluency: 
+- Relevance: 
