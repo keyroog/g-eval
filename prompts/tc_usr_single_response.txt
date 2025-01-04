@@ -1,25 +1,37 @@
-You will be given a dialogue context and a response.
+You will be given a dialogue context, a system response, and a related fact.
 
-Your task is to evaluate the response based on the following criteria: Coherence, Fluency, and Relevance.
+Your task is to evaluate the response using the following criteria: Fluency, Consistency, Coherence, and Relevance. Use the provided fact to evaluate the Consistency of the response.
 
 Please respond **ONLY** with the scores in the format provided below. Do not include any additional text, comments, or explanations. If the response cannot be evaluated, assign all scores as `0`.
 
 ### Evaluation Criteria:
 
-1. **Coherence (1-5)**: Does the response logically follow the dialogue context? A coherent response maintains the flow of the conversation and avoids contradictions.
-2. **Fluency (1-5)**: Is the response grammatically correct, natural-sounding, and easy to understand?
-3. **Relevance (1-5)**: Does the response stay on topic, directly addressing the context and user input?
+1. **Fluency (1-5)**: Is the response grammatically correct, natural-sounding, and easy to understand?
+2. **Consistency (1-5)**: Does the response provide accurate information that aligns with the dialogue context and the provided fact? Does it avoid contradictions or hallucinations?
+3. **Coherence (1-5)**: Does the response logically follow the dialogue context, maintaining the flow of the conversation?
+4. **Relevance (1-5)**: Does the response directly address the user's input, staying on topic and relevant?
 
 ### Evaluation Steps:
 
 1. Carefully read the dialogue context to understand its tone, key points, and overall structure.
-2. Analyze the response to determine if it aligns with the dialogue context based on the evaluation criteria.
-3. Assign a score for each criterion (Coherence, Fluency, Relevance) on a scale of 1 to 5, where:
+2. Review the provided fact and use it to verify the accuracy of the response.
+3. Analyze the response to determine if it aligns with the dialogue context and maintains engagement based on the evaluation criteria.
+4. Assign a score for each criterion (Fluency, Consistency, Coherence, Relevance) on a scale of 1 to 5, where:
    - `1` indicates the lowest quality,
    - `5` indicates the highest quality.
 
-Evaluation Form (scores ONLY):
+### Evaluation Form (scores ONLY):
 
-- Coherence: 
 - Fluency: 
+- Consistency: 
+- Coherence: 
 - Relevance: 
+
+Dialogue Context:
+{{context}}
+
+Fact:
+{{fact}}
+
+Response:
+{{response}}

@@ -46,7 +46,7 @@ def save_offset(offset, offset_file):
         json.dump({"offset": offset}, f, indent=4)
 
 
-def run_test(input_file, single_template_path, full_template_path, output_file, offset_file, max_requests_per_minute=13):
+def run_test(input_file, single_template_path, full_template_path, output_file, offset_file, max_requests_per_minute=10):
     """
     Esegue il processo sul dataset, rispettando i limiti di rate limit e salvando l'offset.
     Args:
@@ -80,64 +80,75 @@ def run_test(input_file, single_template_path, full_template_path, output_file, 
     single_template = g_eval.load_prompt_template(single_template_path)
     full_template = g_eval.load_prompt_template(full_template_path)
 
-    for idx, record in enumerate(data[offset:], start=offset):
+    for idx, instance in enumerate(data[offset:], start=offset):
         try:
             print(f"Elaborazione record {idx + 1}/{len(data)}...")
-            response = record.get("response", "").strip()
-            annotations = record.get("annotations", {})
-            context = record["context"]
-            response = record.get("response", "").strip()
+            response = instance.get("response", "").strip()
+            annotations = instance.get("annotations", {})
+            context = instance["context"]
+            response = instance.get("response", "").strip()
+            annotations = instance.get("annotations", {})
+            system = instance.get("system", "")
 
             # Calcolo dell'overall_score come media dei valori in annotations["Overall"]
             overall_scores = annotations.get("Overall", [])
             overall_score = sum(overall_scores) / len(overall_scores) if overall_scores else None
 
-             # Scegli il template e genera il prompt
-            if response:  # Caso con una risposta singola
-                prompt = g_eval.generate_prompt(single_template, context, response)
-            else:  # Caso con dialogo completo
-                prompt = g_eval.generate_prompt(full_template, context, "")
+            # Normalizzazione del contesto
+            conversation = context.split("\n")
+            conversation = [line.replace("User: ", "").replace("System: ", "").strip() for line in conversation]
+
+            # Logica per turn-level e dialog-level
+            if response:  # Caso turn-level
+                full_conversation = " ".join(conversation) + " " + response.replace("System: ", "").strip()
+                prompt = g_eval.generate_prompt(single_template, full_conversation, response.replace("System: ", "").strip())
+            else:  # Caso dialog-level
+                full_conversation = " ".join(conversation)
+                prompt = g_eval.generate_prompt(full_template, full_conversation, "")
 
             # Effettua la richiesta al modello
             evaluations = g_eval.send_request(prompt)
 
             # Estrai i punteggi di Coherence, Fluency e Relevance con debug
-            coherence, fluency, relevance = None, None, None
+            fluency, consistency, coherence, relevance = None, None, None, None
             for evaluation in evaluations:
-                print(f"DEBUG: Valutazione ricevuta: {evaluation}")  # Debug dell'intera valutazione
                 lines = evaluation.split("\n")
                 for line in lines:
-                    print(f"DEBUG: Linea corrente: {line}")  # Debug di ogni linea
-                    if "Coherence" in line and ":" in line:
-                        try:
-                            coherence = int(line.split(":")[1].strip())
-                            print(f"DEBUG: Coherence estratta: {coherence}")  # Debug Coherence
-                        except ValueError:
-                            print(f"Errore nel parsing di Coherence: {line}")
                     if "Fluency" in line and ":" in line:
                         try:
                             fluency = int(line.split(":")[1].strip())
-                            print(f"DEBUG: Fluency estratta: {fluency}")  # Debug Fluency
                         except ValueError:
                             print(f"Errore nel parsing di Fluency: {line}")
+                    if "Consistency" in line and ":" in line:
+                        try:
+                            consistency = int(line.split(":")[1].strip())
+                        except ValueError:
+                            print(f"Errore nel parsing di Coherence: {line}")
+                    if "Coherence" in line and ":" in line:
+                        try:
+                            coherence = int(line.split(":")[1].strip())
+                        except ValueError:
+                            print(f"Errore nel parsing di Coherence: {line}")
                     if "Relevance" in line and ":" in line:
                         try:
                             relevance = int(line.split(":")[1].strip())
-                            print(f"DEBUG: Relevance estratta: {relevance}")  # Debug Relevance
                         except ValueError:
                             print(f"Errore nel parsing di Relevance: {line}")
 
             # Salva i risultati
             results.append({
-                "context": context,
-                "response": response,
+                "context": full_conversation,
+                "response": response if response else None,
+                "system": system,
                 "overall_score": overall_score,
                 "prompt": prompt,
-                "evaluation": [
-                    f"- Coherence: {coherence}",
-                    f"- Fluency: {fluency}",
-                    f"- Relevance: {relevance}"
-                ]
+                "evaluation": {
+                    "Fluency": fluency,
+                    "Consistency": consistency,
+                    "Coherence": coherence,
+                    "Relevance": relevance
+                },
+                "level": "turn-level" if response else "dialog-level"
             })
 
             # Salva risultati parziali

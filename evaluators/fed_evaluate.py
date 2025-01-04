@@ -24,35 +24,47 @@ def process_fed_data(file_path, g_eval, single_template_path, full_template_path
         context = instance["context"]
         response = instance.get("response", "").strip()
         annotations = instance.get("annotations", {})
+        system = instance.get("system", "")
 
         # Calcolo dell'overall_score come media dei valori in annotations["Overall"]
         overall_scores = annotations.get("Overall", [])
         overall_score = sum(overall_scores) / len(overall_scores) if overall_scores else None
 
-        # Scegli il template e genera il prompt
-        if response:  # Caso con una risposta singola
-            prompt = g_eval.generate_prompt(single_template, context, response)
-        else:  # Caso con dialogo completo
-            prompt = g_eval.generate_prompt(full_template, context, "")
+        # Normalizzazione del contesto
+        conversation = context.split("\n")
+        conversation = [line.replace("User: ", "").replace("System: ", "").strip() for line in conversation]
+
+        # Logica per turn-level e dialog-level
+        if response:  # Caso turn-level
+            full_conversation = " ".join(conversation) + " " + response.replace("System: ", "").strip()
+            prompt = g_eval.generate_prompt(single_template, full_conversation, response.replace("System: ", "").strip())
+        else:  # Caso dialog-level
+            full_conversation = " ".join(conversation)
+            prompt = g_eval.generate_prompt(full_template, full_conversation, "")
 
         # Effettua la richiesta al modello
         evaluations = g_eval.send_request(prompt)
 
         # Estrai i punteggi di Coherence, Fluency e Relevance con debug
-        coherence, fluency, relevance = None, None, None
+        fluency, consistency, coherence, relevance = None, None, None, None
         for evaluation in evaluations:
             lines = evaluation.split("\n")
             for line in lines:
-                if "Coherence" in line and ":" in line:
-                    try:
-                        coherence = int(line.split(":")[1].strip())
-                    except ValueError:
-                        print(f"Errore nel parsing di Coherence: {line}")
                 if "Fluency" in line and ":" in line:
                     try:
                         fluency = int(line.split(":")[1].strip())
                     except ValueError:
                         print(f"Errore nel parsing di Fluency: {line}")
+                if "Consistency" in line and ":" in line:
+                    try:
+                        consistency = int(line.split(":")[1].strip())
+                    except ValueError:
+                        print(f"Errore nel parsing di Coherence: {line}")
+                if "Coherence" in line and ":" in line:
+                    try:
+                        coherence = int(line.split(":")[1].strip())
+                    except ValueError:
+                        print(f"Errore nel parsing di Coherence: {line}")
                 if "Relevance" in line and ":" in line:
                     try:
                         relevance = int(line.split(":")[1].strip())
@@ -61,15 +73,18 @@ def process_fed_data(file_path, g_eval, single_template_path, full_template_path
 
         # Salva i risultati
         results.append({
-            "context": context,
-            "response": response,
+            "context": full_conversation,
+            "response": response if response else None,
+            "system": system,
             "overall_score": overall_score,
             "prompt": prompt,
-            "evaluation": [
-                f"- Coherence: {coherence}",
-                f"- Fluency: {fluency}",
-                f"- Relevance: {relevance}"
-            ]
+            "evaluation": {
+                "Fluency": fluency,
+                "Consistency": consistency,
+                "Coherence": coherence,
+                "Relevance": relevance
+            },
+            "level": "turn-level" if response else "dialog-level"
         })
 
     # Salva i risultati in un file JSON

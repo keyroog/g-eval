@@ -17,7 +17,7 @@ class GEvalAPI:
         with open(file_path, "r") as f:
             return f.read()
 
-    def generate_prompt(self, template, context, response):
+    def generate_prompt(self, template, context, response,fact = None):
         """
         Genera il prompt sostituendo i placeholder nel template.
         Args:
@@ -27,8 +27,11 @@ class GEvalAPI:
         Returns:
             str: Prompt generato.
         """
-        return template.replace("{{Document}}", context).replace("{{Summary}}", response)
-
+        to_return = template.replace("{{context}}", context).replace("{{response}}", response)
+        if fact:
+            to_return = to_return.replace("{{fact}}", fact)
+        return to_return
+        
     def send_request(self, prompt, n=1, max_tokens=50, temperature=0):
         """
         Invia il prompt al modello per ottenere le valutazioni.

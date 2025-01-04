@@ -1,16 +1,17 @@
 You will be given one response written for a dialogue context.
 
-Your task is to evaluate the response using the following criteria: Coherence, Fluency, and Relevance.
+Your task is to evaluate the response using the following criteria: Fluency, Consistency, Coherence, and Relevance.
 
 Please respond **ONLY** with the scores in the format provided below. Do not include any additional text, explanations, or comments. If the response cannot be evaluated, return the scores as `0`.
 
-Evaluation Criteria:
+### Evaluation Criteria:
 
-1. **Coherence (1-5)**: Does the response logically connect to the dialogue context? A coherent response continues the conversation meaningfully and avoids contradictions.
-2. **Fluency (1-5)**: Is the response grammatically correct, easy to understand, and natural in phrasing?
-3. **Relevance (1-5)**: Does the response directly address the context and stay on topic?
+1. **Fluency (1-5)**: Is the response grammatically correct, easy to understand, and natural in phrasing?
+2. **Consistency (1-5)**: Does the response provide accurate information that aligns with the dialogue context? Does it avoid contradictions or hallucinations?
+3. **Coherence (1-5)**: Does the response logically follow the dialogue context, maintaining the flow of the conversation?
+4. **Relevance (1-5)**: Does the response stay on topic and directly address the user's input?
 
-Evaluation Steps:
+### Evaluation Steps:
 
 1. Carefully read the dialogue context to understand its tone, structure, and key points.
 2. Analyze the response to determine if it aligns with the context based on the evaluation criteria.
@@ -18,8 +19,15 @@ Evaluation Steps:
    - `1` indicates the lowest quality,
    - `5` indicates the highest quality.
 
-Evaluation Form (scores ONLY):
+### Evaluation Form (scores ONLY):
 
-- Coherence: 
 - Fluency: 
-- Relevance:
+- Consistency: 
+- Coherence: 
+- Relevance: 
+
+Dialogue Context:
+{{context}}
+
+Response:
+{{response}}

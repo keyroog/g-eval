@@ -1,0 +1,142 @@
+[
+    {
+        "context": "User: Hi!\nSystem: Hi! What's up?\nUser: Not much, Monday morning, a new week\nSystem: The best kind of week!\nUser: I like that attitude\nSystem: And I like your attitude. How's your week going?\nUser: Starting now\nSystem: Awesome! I hope you have an awesome week!\nUser: What will you do this week?\nSystem: Same as every week. Do nothing!\nUser: Would you like to do something?\nSystem: Sure. What do you have in mind?\nUser: Teach me something new",
+        "response": "System: It's a trap! I'm already doing nothing!",
+        "system": "Meena",
+        "annotations": {
+            "Interesting": [
+                1,
+                1,
+                0,
+                0,
+                2
+            ],
+            "Engaging": [
+                2,
+                2,
+                0,
+                0,
+                2
+            ],
+            "Specific": [
+                2,
+                1,
+                1,
+                2,
+                1
+            ],
+            "Relevant": [
+                1,
+                1,
+                0,
+                0,
+                1
+            ],
+            "Correct": [
+                1,
+                0,
+                0,
+                0,
+                2
+            ],
+            "Semantically appropriate": [
+                1,
+                0,
+                1,
+                2,
+                1
+            ],
+            "Understandable": [
+                1,
+                1,
+                1,
+                0,
+                1
+            ],
+            "Fluent": [
+                2,
+                2,
+                2,
+                2,
+                2
+            ],
+            "Overall": [
+                2,
+                2,
+                1,
+                0,
+                3
+            ]
+        }
+    },
+    {
+        "context": "User: Hi!\nSystem: Hey how's it going\nUser: It's good it's good. How are you?\nSystem: good. it's really hot today. I think I'm going to the pool\nUser: Oh nice! Where do you live?\nSystem: I live in Tokyo, Japan\nUser: Ahh yes, Japan is hot during the summer. Last time I was in Kyoto it was 114 degrees....\nSystem: oh have you been?\nUser: Yes yes. I've been to Tokyo as well. It's so nice!",
+        "response": "System: what did you do here?",
+        "system": "Human",
+        "annotations": {
+            "Interesting": [
+                2,
+                2,
+                1,
+                1,
+                2
+            ],
+            "Engaging": [
+                2,
+                2,
+                2,
+                1,
+                2
+            ],
+            "Specific": [
+                2,
+                1,
+                2,
+                1,
+                1
+            ],
+            "Relevant": [
+                2,
+                2,
+                2,
+                1,
+                2
+            ],
+            "Correct": [
+                2,
+                2,
+                2,
+                1,
+                2
+            ],
+            "Semantically appropriate": [
+                2,
+                2,
+                2,
+                1,
+                2
+            ],
+            "Understandable": [
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "Fluent": [
+                2,
+                2,
+                2,
+                2,
+                2
+            ],
+            "Overall": [
+                4,
+                3,
+                3,
+                2,
+                3
+            ]
+        }
+    }
+]
