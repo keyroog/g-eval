@@ -1,142 +1,217 @@
 [
     {
-        "context": "User: Hi!\nSystem: Hi! What's up?\nUser: Not much, Monday morning, a new week\nSystem: The best kind of week!\nUser: I like that attitude\nSystem: And I like your attitude. How's your week going?\nUser: Starting now\nSystem: Awesome! I hope you have an awesome week!\nUser: What will you do this week?\nSystem: Same as every week. Do nothing!\nUser: Would you like to do something?\nSystem: Sure. What do you have in mind?\nUser: Teach me something new",
-        "response": "System: It's a trap! I'm already doing nothing!",
-        "system": "Meena",
-        "annotations": {
-            "Interesting": [
-                1,
-                1,
-                0,
-                0,
-                2
-            ],
-            "Engaging": [
-                2,
-                2,
-                0,
-                0,
-                2
-            ],
-            "Specific": [
-                2,
-                1,
-                1,
-                2,
-                1
-            ],
-            "Relevant": [
-                1,
-                1,
-                0,
-                0,
-                1
-            ],
-            "Correct": [
-                1,
-                0,
-                0,
-                0,
-                2
-            ],
-            "Semantically appropriate": [
-                1,
-                0,
-                1,
-                2,
-                1
-            ],
-            "Understandable": [
-                1,
-                1,
-                1,
-                0,
-                1
-            ],
-            "Fluent": [
-                2,
-                2,
-                2,
-                2,
-                2
-            ],
-            "Overall": [
-                2,
-                2,
-                1,
-                0,
-                3
-            ]
-        }
-    },
-    {
-        "context": "User: Hi!\nSystem: Hey how's it going\nUser: It's good it's good. How are you?\nSystem: good. it's really hot today. I think I'm going to the pool\nUser: Oh nice! Where do you live?\nSystem: I live in Tokyo, Japan\nUser: Ahh yes, Japan is hot during the summer. Last time I was in Kyoto it was 114 degrees....\nSystem: oh have you been?\nUser: Yes yes. I've been to Tokyo as well. It's so nice!",
-        "response": "System: what did you do here?",
-        "system": "Human",
-        "annotations": {
-            "Interesting": [
-                2,
-                2,
-                1,
-                1,
-                2
-            ],
-            "Engaging": [
-                2,
-                2,
-                2,
-                1,
-                2
-            ],
-            "Specific": [
-                2,
-                1,
-                2,
-                1,
-                1
-            ],
-            "Relevant": [
-                2,
-                2,
-                2,
-                1,
-                2
-            ],
-            "Correct": [
-                2,
-                2,
-                2,
-                1,
-                2
-            ],
-            "Semantically appropriate": [
-                2,
-                2,
-                2,
-                1,
-                2
-            ],
-            "Understandable": [
-                1,
-                1,
-                1,
-                1,
-                1
-            ],
-            "Fluent": [
-                2,
-                2,
-                2,
-                2,
-                2
-            ],
-            "Overall": [
-                4,
-                3,
-                3,
-                2,
-                3
-            ]
-        }
+        "context": "hi , how are you ? \n i am good , thank you . i enjoy travel . do you ? \n i do but i am a worrying traveler . where is the best place you have been to ? \n i have not been out of the country but several places in the country . i like chicago a lot . did you know that all of japans highways are tolls ? \n that 's got ta be expensive ! what 's the best place in chicago ? where should i go when i visit ? \n i like the natural history museum and millennium park . lou malnati 's has amazing pizza . it is very expensive to travel in japan . it costs more than $ 300 to travel across the country . \n that 's a lot . i can not imagine having to pay that in tolls . i do like lou 's pizza . have you been to wrigley field ? i should ask first if you are a baseball fan ... \n i have not . we did stop outside of soldier field but did n't get to go in . did you know that iceland has no public rail service ? \n that 's odd . soldier field is just ok . the shedd is really good though . where else , besides chicago do you like going ? \n i enjoyed the mountains of tennessee . they are beautiful . we got a cabin with an amazing view . i would go to a lot more places if you could get there faster . the dutch are working on that . they are creating a commuter bus that goes 160 mph . that would be great . \n can you imagine the movie speed on that bus ! ! ! ! holy smokes ! \n ha ha , yes that would change that movie quite a bit . back to iceland , most do n't have cars and travel between towns by flight ! \n really . seems a little overkill but what do i know ... i want to go there and see the northern lights some day . \n that would be a beautiful sight . off topic but how do you feel about sharks ? \n i 'm for em ! \n they are very interesting . did you know that they do n't have rib cages ? \n\n",
+        "fact": "_nofact\n",
+        "annotators": [
+            "sm",
+            "fl",
+            "yf"
+        ],
+        "responses": [
+            {
+                "response": "really ? i think they are all cariledge , no ? \n",
+                "model": "Original Ground Truth",
+                "Understandable": [
+                    1,
+                    1,
+                    0
+                ],
+                "Natural": [
+                    3,
+                    2,
+                    2
+                ],
+                "Maintains Context": [
+                    3,
+                    3,
+                    2
+                ],
+                "Engaging": [
+                    3,
+                    2,
+                    2
+                ],
+                "Uses Knowledge": [
+                    1,
+                    1,
+                    1
+                ],
+                "Overall": [
+                    5,
+                    3,
+                    2
+                ]
+            },
+            {
+                "response": "i 'm not sure . i 'm sure they were really strong .\n",
+                "model": "Argmax Decoding",
+                "Understandable": [
+                    1,
+                    1,
+                    1
+                ],
+                "Natural": [
+                    3,
+                    2,
+                    2
+                ],
+                "Maintains Context": [
+                    3,
+                    3,
+                    2
+                ],
+                "Engaging": [
+                    2,
+                    2,
+                    1
+                ],
+                "Uses Knowledge": [
+                    1,
+                    1,
+                    1
+                ],
+                "Overall": [
+                    3,
+                    3,
+                    3
+                ]
+            },
+            {
+                "response": "i did not know that . i wonder if they ever had that rule ?\n",
+                "model": "Nucleus Decoding (p = 0.3)",
+                "Understandable": [
+                    0,
+                    1,
+                    0
+                ],
+                "Natural": [
+                    2,
+                    2,
+                    2
+                ],
+                "Maintains Context": [
+                    2,
+                    3,
+                    3
+                ],
+                "Engaging": [
+                    2,
+                    2,
+                    2
+                ],
+                "Uses Knowledge": [
+                    1,
+                    1,
+                    1
+                ],
+                "Overall": [
+                    2,
+                    3,
+                    2
+                ]
+            },
+            {
+                "response": "i did n't know that !\n",
+                "model": "Nucleus Decoding (p = 0.5)",
+                "Understandable": [
+                    1,
+                    1,
+                    1
+                ],
+                "Natural": [
+                    2,
+                    2,
+                    3
+                ],
+                "Maintains Context": [
+                    2,
+                    3,
+                    2
+                ],
+                "Engaging": [
+                    1,
+                    2,
+                    1
+                ],
+                "Uses Knowledge": [
+                    1,
+                    1,
+                    1
+                ],
+                "Overall": [
+                    2,
+                    2,
+                    3
+                ]
+            },
+            {
+                "response": "i have no clue , they are really strong creatures\n",
+                "model": "Nucleus Decoding (p = 0.7)",
+                "Understandable": [
+                    1,
+                    1,
+                    1
+                ],
+                "Natural": [
+                    3,
+                    2,
+                    3
+                ],
+                "Maintains Context": [
+                    3,
+                    3,
+                    3
+                ],
+                "Engaging": [
+                    2,
+                    2,
+                    2
+                ],
+                "Uses Knowledge": [
+                    0,
+                    1,
+                    1
+                ],
+                "Overall": [
+                    3,
+                    3,
+                    4
+                ]
+            },
+            {
+                "response": "wow really ? so their heart is unprotected ?",
+                "model": "New Human Generated",
+                "Understandable": [
+                    1,
+                    1,
+                    1
+                ],
+                "Natural": [
+                    3,
+                    3,
+                    3
+                ],
+                "Maintains Context": [
+                    3,
+                    3,
+                    3
+                ],
+                "Engaging": [
+                    3,
+                    3,
+                    3
+                ],
+                "Uses Knowledge": [
+                    1,
+                    1,
+                    1
+                ],
+                "Overall": [
+                    5,
+                    5,
+                    5
+                ]
+            }
+        ]
     }
 ]
