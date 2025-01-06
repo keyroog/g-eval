@@ -50,19 +50,19 @@ Assicurati che i dataset siano salvati nella cartella `datasets/`.
 ### 1. **Valutazione del Dataset TC_USR**
 Esegui la valutazione di un sottoinsieme del dataset TC_USR:
 ```bash
-python main.py --mode tc_usr                --input_file datasets/tc_usr_data.json                --single_template_path prompts/tc_usr_single_response.txt                --full_template_path prompts/tc_usr_single_response.txt                --output_file results/tc/results_tc_usr.json                --num_records 1
+python main.py --mode tc_usr \n --input_file datasets/tc_usr_data.json \n --single_template_path prompts/tc_usr_single_response.txt \n --full_template_path prompts/tc_usr_single_response.txt \n --output_file results/tc/results_tc_usr.json \n --num_records 1
 ```
 
 ### 2. **Valutazione del Dataset FED**
 Esegui la valutazione di un sottoinsieme del dataset FED:
 ```bash
-python main.py --mode fed                --input_file datasets/fed_data.json                --single_template_path prompts/fed_single_response.txt                --full_template_path prompts/fed_full_dialogue.txt                --output_file results/fed/results_fed.json                --num_records 2
+python main.py --mode fed \n --input_file datasets/fed_data.json \n --single_template_path prompts/fed_single_response.txt \n --full_template_path prompts/fed_full_dialogue.txt \n --output_file results/fed/results_fed.json \n --num_records 2
 ```
 
 ### 3. **Analisi dei Risultati**
 Analizza i risultati di una valutazione completata e genera visualizzazioni:
 ```bash
-python main.py --mode results                --input_file results/fed/results_fed_all.json                --output_file results/analyze_output
+python main.py --mode results \n --input_file results/fed/results_fed_all.json \n --output_file results/analyze_output
 ```
 
 ---
