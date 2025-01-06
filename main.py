@@ -210,16 +210,23 @@ def main(mode, input_file, single_template_path, full_template_path, output_file
         api_key = load_config()
         model = "gpt-4o-mini"
         g_eval = GEvalAPI(api_key=api_key, model=model)
+    # Carica i dati
+    data = sample_data(input_file, num_records)
+
+    # Salva il sottoinsieme per il debug (se necessario)
+    temp_file = "results/temp_test_data.json"
+    with open(temp_file, "w") as f:
+        json.dump(data, f, indent=4)
 
     # Modalità 'results'
     if mode == "results":
         generate_results(input_file, output_file)
+    # Elaborazione in base alla modalità
     elif mode == "fed":
-        # Precedente logica per 'fed'
-        ...
+        process_fed_data(temp_file, g_eval, single_template_path, full_template_path, output_file)
     elif mode == "tc_usr":
-        # Precedente logica per 'tc_usr'
-        ...
+        process_tc_usr_data(temp_file, g_eval, single_template_path, output_file)
+
     else:
         raise ValueError("Modalità non valida. Usa 'fed', 'tc_usr' o 'results'.")
 
