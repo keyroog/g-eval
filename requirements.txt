@@ -1,0 +1,7 @@
+matplotlib
+pandas
+seaborn
+scipy
+prettytable
+python-dotenv
+openai
