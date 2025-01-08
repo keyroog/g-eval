@@ -1,15 +1,15 @@
 You will be given one response written for a dialogue context.
 
-Your task is to evaluate the response using the following criteria: Fluency, Consistency, Coherence, and Relevance.
+Your task is to evaluate the response using the following criteria: Naturalness, Coherence, Engagingness, and Groundedness.
 
 Please respond **ONLY** with the scores in the format provided below. Do not include any additional text, explanations, or comments. If the response cannot be evaluated, return the scores as `0`.
 
 ### Evaluation Criteria:
 
-1. **Fluency (1-5)**: Is the response grammatically correct, easy to understand, and natural in phrasing?
-2. **Consistency (1-5)**: Does the response provide accurate information that aligns with the dialogue context? Does it avoid contradictions or hallucinations?
-3. **Coherence (1-5)**: Does the response logically follow the dialogue context, maintaining the flow of the conversation?
-4. **Relevance (1-5)**: Does the response stay on topic and directly address the user's input?
+1. **Naturalness (1-5)**: Is the response human-like, natural, and conversational in tone?
+2. **Coherence (1-5)**: Does the response logically follow the dialogue context, maintaining the flow of the conversation?
+3. **Engagingness (1-5)**: Is the response interesting and engaging for the user? Does it encourage continued interaction?
+4. **Groundedness (1-5)**: Does the response provide accurate and factual information? Does it align with the dialogue context and avoid unsupported statements?
 
 ### Evaluation Steps:
 
@@ -21,10 +21,10 @@ Please respond **ONLY** with the scores in the format provided below. Do not inc
 
 ### Evaluation Form (scores ONLY):
 
-- Fluency: 
-- Consistency: 
+- Naturalness: 
 - Coherence: 
-- Relevance: 
+- Engagingness: 
+- Groundedness: 
 
 Dialogue Context:
 {{context}}

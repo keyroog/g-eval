@@ -251,6 +251,6 @@ if __name__ == "__main__":
         input_file=args.input_file,
         single_template_path=args.single_template_path,
         full_template_path=args.full_template_path,
-        output_file="results/" + args.output_file,
+        output_file=args.output_file,
         num_records=args.num_records,
     )

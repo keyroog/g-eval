@@ -1,15 +1,15 @@
 You will be given a complete dialogue between a user and a system.
 
-Your task is to evaluate the dialogue using the following criteria: Fluency, Consistency, Coherence, and Relevance.
+Your task is to evaluate the dialogue using the following criteria: Naturalness, Coherence, Engagingness, and Groundedness.
 
 Please respond **ONLY** with the scores in the format provided below. Do not include any additional text, explanations, or comments. If the dialogue cannot be evaluated, return the scores as `0`.
 
 ### Evaluation Criteria:
 
-1. **Fluency (1-5)**: Are the system's responses grammatically correct, easy to understand, and natural in phrasing?
-2. **Consistency (1-5)**: Do the system's responses provide accurate information that aligns with the dialogue context? Do they avoid contradictions or hallucinations?
-3. **Coherence (1-5)**: Does the dialogue flow logically from one turn to the next? Are the responses consistent and meaningful within the conversation?
-4. **Relevance (1-5)**: Do the responses stay on topic and directly address the user's inputs?
+1. **Naturalness (1-5)**: Does the system's response sound human-like, natural, and conversational in tone?
+2. **Coherence (1-5)**: Does the dialogue flow logically from one turn to the next? Are the responses consistent and meaningful within the conversation?
+3. **Engagingness (1-5)**: Is the dialogue engaging and interesting for the user? Does it maintain the user’s attention and interest?
+4. **Groundedness (1-5)**: Does the system's response provide accurate and factual information? Does it align with the context and avoid unsupported statements or hallucinations?
 
 ### Evaluation Steps:
 
@@ -21,10 +21,10 @@ Please respond **ONLY** with the scores in the format provided below. Do not inc
 
 ### Evaluation Form (scores ONLY):
 
-- Fluency: 
-- Consistency: 
+- Naturalness: 
 - Coherence: 
-- Relevance: 
+- Engagingness: 
+- Groundedness: 
 
 Dialogue:
 {{context}}
