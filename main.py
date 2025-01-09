@@ -51,7 +51,7 @@ def plot_heatmap(df, output_folder):
     import seaborn as sns
     import matplotlib.pyplot as plt
 
-    evaluation_df = pd.DataFrame(df["evaluation"].tolist())  # Espande evaluation in un DataFrame
+    evaluation_df = pd.DataFrame(df["evaluation"].tolist())
     evaluation_df["overall_score"] = df["overall_score"]
 
     correlation_matrix = evaluation_df.corr()
@@ -74,14 +74,12 @@ def plot_bar_correlation(results, output_folder):
     plt.bar(metrics, values, color=["blue", "orange", "green"])
     plt.title("Correlazioni tra Evaluation Mean e Overall Score")
     plt.ylabel("Valore della Correlazione")
-    plt.ylim(0, 1)  # Le correlazioni sono comprese tra -1 e 1, limitiamo a [0, 1] per distanze
+    plt.ylim(0, 1)
     plt.grid(axis="y", linestyle="--", alpha=0.7)
 
-    # Aggiungi i valori sopra le barre
     for i, v in enumerate(values):
         plt.text(i, v + 0.02, f"{v:.4f}", ha="center", fontsize=10, color="black")
 
-    # Salva il grafico
     plt.savefig(os.path.join(output_folder, "correlation_bar_plot.png"))
     plt.close()
 
@@ -96,27 +94,20 @@ def generate_results(input_file, output_folder):
     from scipy.stats import spearmanr, pearsonr, kendalltau
     from prettytable import PrettyTable
 
-    # Assicurati che la cartella esista
     os.makedirs(output_folder, exist_ok=True)
 
-    # Carica i dati
     with open(input_file, "r") as f:
         data = json.load(f)
 
-    # Converti i dati in un DataFrame per elaborazioni successive
     df = pd.DataFrame(data)
 
-    # Calcola la media dei punteggi di evaluation per ogni riga
     df["evaluation_mean"] = df["evaluation"].apply(lambda x: sum(x.values()) / len(x))
 
-    # Prepara i dizionari per i punteggi predetti e umani
     pred_scores, human_scores = {}, {}
 
     for _, row in df.iterrows():
-        # Usa "system" come identificativo unico del sistema
         system_id = row["system"]
 
-        # Inizializza le liste per i punteggi predetti e umani
         if system_id not in pred_scores:
             pred_scores[system_id] = []
             human_scores[system_id] = []
@@ -125,7 +116,6 @@ def generate_results(input_file, output_folder):
         pred_scores[system_id].append(row["evaluation_mean"])
         human_scores[system_id].append(row["overall_score"])
 
-    # Calcola le correlazioni
     results = {'pearson': 0, 'spearman': 0, 'kendalltau': 0}
     valid_systems = 0
 
@@ -133,27 +123,22 @@ def generate_results(input_file, output_folder):
         pred_scores_system = pred_scores[system_id]
         human_scores_system = human_scores[system_id]
 
-        # Ignora sistemi con punteggi uniformi
         if len(set(human_scores_system)) <= 1 or len(set(pred_scores_system)) <= 1:
             continue
 
-        # Calcola le correlazioni
         results['pearson'] += pearsonr(pred_scores_system, human_scores_system)[0]
         results['spearman'] += spearmanr(pred_scores_system, human_scores_system)[0]
         results['kendalltau'] += kendalltau(pred_scores_system, human_scores_system)[0]
         valid_systems += 1
 
-    # Calcola le medie delle correlazioni
     if valid_systems > 0:
         results = {k: v / valid_systems for k, v in results.items()}
 
-    # Stampa e salva le correlazioni in formato tabella
     table = PrettyTable(['Pearson', 'Spearman', 'Kendall'])
     table.add_row([round(results['pearson'], 4), round(results['spearman'], 4), round(results['kendalltau'], 4)])
     print("Correlazioni calcolate:")
     print(table)
 
-    # Salva le correlazioni in un file di testo
     with open(os.path.join(output_folder, "correlations.txt"), "w") as f:
         f.write(str(table))
 
@@ -165,13 +150,10 @@ def generate_results(input_file, output_folder):
     print(f"Risultati generati e salvati in {output_folder}")
 
 def load_config():
-    """
-    Carica l'API key da variabili d'ambiente o file .env.
-    """
     import os
     from dotenv import load_dotenv
 
-    load_dotenv()  # Carica variabili da .env, se presente
+    load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise ValueError("API key non trovata. Assicurati che OPENAI_API_KEY sia configurata.")
@@ -179,14 +161,6 @@ def load_config():
 
 
 def sample_data(file_path, num_records=None):
-    """
-    Carica i dati e restituisce un sottoinsieme casuale o tutti i record.
-    Args:
-        file_path (str): Percorso al file JSON.
-        num_records (int, opzionale): Numero di record da campionare.
-    Returns:
-        list: Dati campionati o completi.
-    """
     with open(file_path, "r") as f:
         data = json.load(f)
     if num_records:
@@ -195,33 +169,18 @@ def sample_data(file_path, num_records=None):
 
 
 def main(mode, input_file, single_template_path, full_template_path, output_file, num_records):
-    """
-    Elabora il dataset in base alla modalità selezionata.
-    Args:
-        mode (str): Modalità ('fed', 'tc_usr' o 'results').
-        input_file (str): Percorso al file JSON del dataset.
-        single_template_path (str): Percorso al template per risposte singole.
-        full_template_path (str): Percorso al template per dialoghi completi.
-        output_file (str): Percorso per salvare i risultati.
-        num_records (int, opzionale): Numero di record da elaborare.
-    """
-    # Carica l'API key (escluso per modalità 'results')
     if mode in ["fed", "tc_usr"]:
         api_key = load_config()
         model = "gpt-4o-mini"
         g_eval = GEvalAPI(api_key=api_key, model=model)
-    # Carica i dati
     data = sample_data(input_file, num_records)
 
-    # Salva il sottoinsieme per il debug (se necessario)
     temp_file = "results/temp_test_data.json"
     with open(temp_file, "w") as f:
         json.dump(data, f, indent=4)
 
-    # Modalità 'results'
     if mode == "results":
         generate_results(input_file, output_file)
-    # Elaborazione in base alla modalità
     elif mode == "fed":
         process_fed_data(temp_file, g_eval, single_template_path, full_template_path, output_file)
     elif mode == "tc_usr":
@@ -234,7 +193,6 @@ def main(mode, input_file, single_template_path, full_template_path, output_file
 
 
 if __name__ == "__main__":
-    # Parsing degli argomenti
     parser = argparse.ArgumentParser(description="Elabora i dataset fed, tc_usr o genera risultati.")
     parser.add_argument("--mode", type=str, required=True, choices=["fed", "tc_usr", "results"],
                         help="Modalità: 'fed', 'tc_usr' o 'results'.")
@@ -245,7 +203,6 @@ if __name__ == "__main__":
     parser.add_argument("--num_records", type=int, default=None, help="Numero di record da elaborare (opzionale).")
     args = parser.parse_args()
 
-    # Esegui il main
     main(
         mode=args.mode,
         input_file=args.input_file,

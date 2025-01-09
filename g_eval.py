@@ -7,42 +7,16 @@ class GEvalAPI:
         self.model = model
 
     def load_prompt_template(self, file_path):
-        """
-        Carica il template del prompt da un file di testo.
-        Args:
-            file_path (str): Percorso al file contenente il template.
-        Returns:
-            str: Template del prompt.
-        """
         with open(file_path, "r") as f:
             return f.read()
 
     def generate_prompt(self, template, context, response,fact = None):
-        """
-        Genera il prompt sostituendo i placeholder nel template.
-        Args:
-            template (str): Template del prompt.
-            context (str): Contesto del dialogo o testo di input.
-            response (str): Risposta generata dal sistema da valutare.
-        Returns:
-            str: Prompt generato.
-        """
         to_return = template.replace("{{context}}", context).replace("{{response}}", response)
         if fact:
             to_return = to_return.replace("{{fact}}", fact)
         return to_return
         
     def send_request(self, prompt, n=1, max_tokens=50, temperature=0):
-        """
-        Invia il prompt al modello per ottenere le valutazioni.
-        Args:
-            prompt (str): Prompt generato.
-            n (int): Numero di risposte da generare.
-            max_tokens (int): Numero massimo di token nella risposta.
-            temperature (float): Parametro di temperatura per il completamento.
-        Returns:
-            list[str]: Valutazioni generate dal modello.
-        """
         while True:
             try:
                 response = self.client.chat.completions.create(
