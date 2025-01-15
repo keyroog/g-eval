@@ -1,33 +1,18 @@
-You will be given one response written for a dialogue context.
+You will be given a conversation between two individuals and one potential response for the next turn in the conversation.  
 
-Your task is to evaluate the response using the following criteria: Naturalness, Coherence, Engagingness, and Groundedness.
+Your task is to evaluate the overall quality of the response.  
 
-Please respond **ONLY** with the scores in the format provided below. Do not include any additional text, explanations, or comments. If the response cannot be evaluated, return the scores as `0`.
+Please follow these instructions carefully and respond ONLY with the score in the format provided below. Do not include any additional text, comments, or explanations. If the response cannot be evaluated, assign a score of `0`.  
 
-### Evaluation Criteria:
+Evaluation Criteria:  
+Overall Quality (1-3): Is the overall quality of the response satisfactory?  
+- Score 1 (Unsatisfactory): The response does not align with the tone, context, or intent of the conversation. It may include irrelevant or incoherent content, disrupting the flow.  
+- Score 2 (Satisfactory): The response is generally appropriate, maintaining coherence and relevance. It may have minor issues, such as awkward phrasing or missing some context, but it still contributes to the conversation.  
+- Score 3 (Excellent): The response is highly relevant, engaging, and natural. It clearly addresses the topic, enhances the conversation, and has no significant issues in tone or content.  
 
-1. **Naturalness (1-5)**: Is the response human-like, natural, and conversational in tone?
-2. **Coherence (1-5)**: Does the response logically follow the dialogue context, maintaining the flow of the conversation?
-3. **Engagingness (1-5)**: Is the response interesting and engaging for the user? Does it encourage continued interaction?
-4. **Groundedness (1-5)**: Does the response provide accurate and factual information? Does it align with the dialogue context and avoid unsupported statements?
+Evaluation Steps:  
+1. Read the conversation and response carefully.  
+2. Assign a score between 1 and 3 based on the criteria above.  
 
-### Evaluation Steps:
-
-1. Carefully read the dialogue context to understand its tone, structure, and key points.
-2. Analyze the response to determine if it aligns with the context based on the evaluation criteria.
-3. Assign a score for each criterion on a scale of 1 to 5, where:
-   - `1` indicates the lowest quality,
-   - `5` indicates the highest quality.
-
-### Evaluation Form (scores ONLY):
-
-- Naturalness: 
-- Coherence: 
-- Engagingness: 
-- Groundedness: 
-
-Dialogue Context:
-{{context}}
-
-Response:
-{{response}}
+Response Format:  
+Overall Quality: <score>  

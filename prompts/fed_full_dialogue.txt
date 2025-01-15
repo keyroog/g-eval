@@ -1,30 +1,16 @@
-You will be given a complete dialogue between a user and a system.
+You will be given a conversation between two individuals. Your task is to evaluate the overall quality of the conversation.  
 
-Your task is to evaluate the dialogue using the following criteria: Naturalness, Coherence, Engagingness, and Groundedness.
+Please follow these instructions carefully and respond ONLY with the score in the format provided below. Do not include any additional text, comments, or explanations. If the conversation cannot be evaluated, assign a score of `0`.  
 
-Please respond **ONLY** with the scores in the format provided below. Do not include any additional text, explanations, or comments. If the dialogue cannot be evaluated, return the scores as `0`.
+Evaluation Criteria:  
+Overall Quality (1-3): Is the overall quality of the conversation satisfactory?  
+- Score 1 (Unsatisfactory): The conversation lacks coherence and relevance. Responses are disconnected, causing confusion or disruption in the interaction.  
+- Score 2 (Satisfactory): The conversation is generally coherent and relevant but may have minor issues. Some responses might not align perfectly with the context, or the flow may lose engagement at times. Overall, it remains understandable.  
+- Score 3 (Excellent): The conversation is fluid, natural, and well-aligned with the tone and intent of the participants. Each response is relevant, contributes to the discussion, and the conversation flows smoothly with clear and engaging interaction.  
 
-### Evaluation Criteria:
+Evaluation Steps:  
+1. Read the conversation carefully.  
+2. Assign a score between 1 and 3 for overall quality based on the criteria above.  
 
-1. **Naturalness (1-5)**: Does the system's response sound human-like, natural, and conversational in tone?
-2. **Coherence (1-5)**: Does the dialogue flow logically from one turn to the next? Are the responses consistent and meaningful within the conversation?
-3. **Engagingness (1-5)**: Is the dialogue engaging and interesting for the user? Does it maintain the user’s attention and interest?
-4. **Groundedness (1-5)**: Does the system's response provide accurate and factual information? Does it align with the context and avoid unsupported statements or hallucinations?
-
-### Evaluation Steps:
-
-1. Carefully read the entire dialogue to understand its tone, structure, and flow.
-2. Evaluate each system response based on the defined criteria.
-3. Assign a score for each criterion on a scale of 1 to 5, where:
-   - `1` indicates the lowest quality,
-   - `5` indicates the highest quality.
-
-### Evaluation Form (scores ONLY):
-
-- Naturalness: 
-- Coherence: 
-- Engagingness: 
-- Groundedness: 
-
-Dialogue:
-{{context}}
+Response Format:  
+Overall Quality: <score>  
