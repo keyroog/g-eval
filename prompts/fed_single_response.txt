@@ -14,5 +14,13 @@ Evaluation Steps:
 1. Read the conversation and response carefully.  
 2. Assign a score between 1 and 3 based on the criteria above.  
 
+Dialog:
+
+{{context}}
+
+Response:
+
+{{response}}
+
 Response Format:  
 Overall Quality: <score>  

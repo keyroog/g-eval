@@ -1,4 +1,6 @@
-You will be given a conversation between two individuals. Your task is to evaluate the overall quality of the conversation.  
+You will be given a conversation between two individuals.
+
+Your task is to evaluate the overall quality of the conversation.  
 
 Please follow these instructions carefully and respond ONLY with the score in the format provided below. Do not include any additional text, comments, or explanations. If the conversation cannot be evaluated, assign a score of `0`.  
 
@@ -11,6 +13,10 @@ Overall Quality (1-3): Is the overall quality of the conversation satisfactory?
 Evaluation Steps:  
 1. Read the conversation carefully.  
 2. Assign a score between 1 and 3 for overall quality based on the criteria above.  
+
+Dialog:
+
+{{context}}
 
 Response Format:  
 Overall Quality: <score>  

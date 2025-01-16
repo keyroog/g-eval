@@ -1,0 +1,32 @@
+[
+    {
+        "dialog_id": 0,
+        "context": "How\u2019s it going? i listen to rap music. you? I am a big fan of rap music What is your favorite singer? I like to listen to music while I work Where do you work? I work in the garden. I own a small house. Where is your house? Where's your house? yes Mmm. Where do you live? I live in the country and you? Italy. I moved here because I love pizza I love pizza. I work as an electrician. Are you male or female? I'm female. I am an electrician. Wow you are sexy I am a plumber. I am an electrician. How old are you? I'm a little old. ok bye Hi, I am an electrician.",
+        "overall_score": 4,
+        "prompt": "You will be given a conversation between two individuals. Your task is to evaluate the overall quality of the conversation.  \n\nPlease follow these instructions carefully and respond ONLY with the score in the format provided below. Do not include any additional text, comments, or explanations. If the conversation cannot be evaluated, assign a score of `0`.  \n\nEvaluation Criteria:  \nOverall Quality (1-3): Is the overall quality of the conversation satisfactory?  \n- Score 1 (Unsatisfactory): The conversation lacks coherence and relevance. Responses are disconnected, causing confusion or disruption in the interaction.  \n- Score 2 (Satisfactory): The conversation is generally coherent and relevant but may have minor issues. Some responses might not align perfectly with the context, or the flow may lose engagement at times. Overall, it remains understandable.  \n- Score 3 (Excellent): The conversation is fluid, natural, and well-aligned with the tone and intent of the participants. Each response is relevant, contributes to the discussion, and the conversation flows smoothly with clear and engaging interaction.  \n\nEvaluation Steps:  \n1. Read the conversation carefully.  \n2. Assign a score between 1 and 3 for overall quality based on the criteria above.  \n\nResponse Format:  \nOverall Quality: <score>  ",
+        "evaluation": {
+            "Overall": 3
+        },
+        "level": "dialog-level"
+    },
+    {
+        "dialog_id": 1,
+        "context": "I am little bit shy\u263a\ufe0f  Tell me about yourself! Hey, are you alive there? \ud83d\ude31 So what's up with your family? I have a lot of problems. I am not good at it. Are you overweight and unhappy? Wow. What problems exactly do you have? I am fine by the way. Never been happier I am not sure. I am not looking for a job, but i am not good at it. Please, tell me something \ud83d\ude4f Why are you not looking for a job? Jobs are important I am not sure. I am looking for a job at the local hospital. So you are into medical stuff, huh. I am not to tell you the truth I am not sure of that. I am only in the shower.",
+        "overall_score": 2,
+        "prompt": "You will be given a conversation between two individuals. Your task is to evaluate the overall quality of the conversation.  \n\nPlease follow these instructions carefully and respond ONLY with the score in the format provided below. Do not include any additional text, comments, or explanations. If the conversation cannot be evaluated, assign a score of `0`.  \n\nEvaluation Criteria:  \nOverall Quality (1-3): Is the overall quality of the conversation satisfactory?  \n- Score 1 (Unsatisfactory): The conversation lacks coherence and relevance. Responses are disconnected, causing confusion or disruption in the interaction.  \n- Score 2 (Satisfactory): The conversation is generally coherent and relevant but may have minor issues. Some responses might not align perfectly with the context, or the flow may lose engagement at times. Overall, it remains understandable.  \n- Score 3 (Excellent): The conversation is fluid, natural, and well-aligned with the tone and intent of the participants. Each response is relevant, contributes to the discussion, and the conversation flows smoothly with clear and engaging interaction.  \n\nEvaluation Steps:  \n1. Read the conversation carefully.  \n2. Assign a score between 1 and 3 for overall quality based on the criteria above.  \n\nResponse Format:  \nOverall Quality: <score>  ",
+        "evaluation": {
+            "Overall": 3
+        },
+        "level": "dialog-level"
+    },
+    {
+        "dialog_id": 2,
+        "context": "Hello! How is your day? \ud83d\ude09 i have played ping pong all day That is cool\ud83d\ude0e, i love the games are you in the army? no I am female. Are you? I am 25 years old and i am military do you like your job? I love it. I am a military brat and love\u2764 to travel. Which countries have you visited? I am from the united states, how about you? Have you been in china? I have never been. I am a military brat and love it. ok bye I am sure you are a little busy too.",
+        "overall_score": 3,
+        "prompt": "You will be given a conversation between two individuals. Your task is to evaluate the overall quality of the conversation.  \n\nPlease follow these instructions carefully and respond ONLY with the score in the format provided below. Do not include any additional text, comments, or explanations. If the conversation cannot be evaluated, assign a score of `0`.  \n\nEvaluation Criteria:  \nOverall Quality (1-3): Is the overall quality of the conversation satisfactory?  \n- Score 1 (Unsatisfactory): The conversation lacks coherence and relevance. Responses are disconnected, causing confusion or disruption in the interaction.  \n- Score 2 (Satisfactory): The conversation is generally coherent and relevant but may have minor issues. Some responses might not align perfectly with the context, or the flow may lose engagement at times. Overall, it remains understandable.  \n- Score 3 (Excellent): The conversation is fluid, natural, and well-aligned with the tone and intent of the participants. Each response is relevant, contributes to the discussion, and the conversation flows smoothly with clear and engaging interaction.  \n\nEvaluation Steps:  \n1. Read the conversation carefully.  \n2. Assign a score between 1 and 3 for overall quality based on the criteria above.  \n\nResponse Format:  \nOverall Quality: <score>  ",
+        "evaluation": {
+            "Overall": 3
+        },
+        "level": "dialog-level"
+    }
+]

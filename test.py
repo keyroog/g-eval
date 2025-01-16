@@ -5,6 +5,37 @@ from g_eval import GEvalAPI
 from evaluators.fed_evaluate import process_fed_data
 import time
 
+def load_api_keys(api_keys_file):
+    """
+    Carica le API key dal file JSON.
+    """
+    with open(api_keys_file, "r") as f:
+        data = json.load(f)
+    return data
+
+
+def save_api_keys(api_keys_file, data):
+    """
+    Salva lo stato delle API key nel file JSON.
+    """
+    with open(api_keys_file, "w") as f:
+        json.dump(data, f, indent=4)
+
+
+def get_current_api_key(api_keys_data):
+    """
+    Restituisce l'API key corrente.
+    """
+    index = api_keys_data["current_index"]
+    return api_keys_data["keys"][index]
+
+
+def rotate_api_key(api_keys_data):
+    """
+    Cambia l'API key corrente con la prossima nella lista.
+    """
+    api_keys_data["current_index"] = (api_keys_data["current_index"] + 1) % len(api_keys_data["keys"])
+    return api_keys_data
 
 def load_offset(offset_file):
     """
@@ -61,6 +92,9 @@ def run_test(input_file, single_template_path, full_template_path, output_file, 
     API_KEY = os.getenv("OPENAI_API_KEY")
     if not API_KEY:
         raise ValueError("L'API key non è stata trovata. Assicurati che OPENAI_API_KEY sia definita nel file .env.")
+
+    api_keys_data = load_api_keys("api_keys.json")
+    API_KEY = get_current_api_key(api_keys_data)
 
     MODEL = "gpt-4o-mini"
     g_eval = GEvalAPI(api_key=API_KEY, model=MODEL)
@@ -143,17 +177,28 @@ def run_test(input_file, single_template_path, full_template_path, output_file, 
             time.sleep(60 / max_requests_per_minute)
 
         except Exception as e:
-            if "rate limit" in str(e).lower():
-                print(f"Rate limit raggiunto. Salvataggio stato e uscita...")
-                save_offset(idx, offset_file)
-                break
+            print(f"Errore durante l'elaborazione del record {idx}: {e}")
+
+            # Controlla se l'errore è legato all'API key
+            if "rate limit" in str(e).lower() or "invalid api key" in str(e).lower():
+                print("API key esaurita o non valida. Cambiando chiave...")
+                api_keys_data = rotate_api_key(api_keys_data)
+                save_api_keys("api_keys.json", api_keys_data)
+
+                # Aggiorna l'API key
+                API_KEY = get_current_api_key(api_keys_data)
+                g_eval = GEvalAPI(api_key=API_KEY, model=MODEL)
+                print(f"Nuova API key selezionata: {API_KEY}")
             else:
-                print(f"Errore durante l'elaborazione del record {idx}: {e}")
                 save_offset(idx, offset_file)
+                time.sleep(2)
                 break
 
-    print(f"Elaborazione completata o interrotta. Risultati salvati in {output_file}")
-
+    #riprova
+    if(idx < len(data)):
+        run_test(input_file, single_template_path, full_template_path, output_file, offset_file, max_requests_per_minute)
+    else:
+        print(f"Elaborazione completata. Risultati salvati in {output_file}")
 
 if __name__ == "__main__":
     # Configura i file e parametri
