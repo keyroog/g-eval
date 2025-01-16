@@ -31,31 +31,14 @@ def process_fed_data(file_path, g_eval, single_template_path, full_template_path
 
         evaluations = g_eval.send_request(prompt)
 
-        fluency, consistency, coherence, relevance = None, None, None, None
+        overall = None
         for evaluation in evaluations:
-            lines = evaluation.split("\n")
-            for line in lines:
-                if "Fluency" in line and ":" in line:
-                    try:
-                        fluency = int(line.split(":")[1].strip())
-                    except ValueError:
-                        print(f"Errore nel parsing di Fluency: {line}")
-                if "Consistency" in line and ":" in line:
-                    try:
-                        consistency = int(line.split(":")[1].strip())
-                    except ValueError:
-                        print(f"Errore nel parsing di Coherence: {line}")
-                if "Coherence" in line and ":" in line:
-                    try:
-                        coherence = int(line.split(":")[1].strip())
-                    except ValueError:
-                        print(f"Errore nel parsing di Coherence: {line}")
-                if "Relevance" in line and ":" in line:
-                    try:
-                        relevance = int(line.split(":")[1].strip())
-                    except ValueError:
-                        print(f"Errore nel parsing di Relevance: {line}")
-
+            if "Overall" in evaluation and ":" in evaluation:
+                try:
+                    overall = int(evaluation.split(":")[1].strip())
+                except ValueError:
+                    print(f"Errore nel parsing di Overall: {evaluation}")
+        
         results.append({
             "context": full_conversation,
             "response": response if response else None,
@@ -63,13 +46,12 @@ def process_fed_data(file_path, g_eval, single_template_path, full_template_path
             "overall_score": overall_score,
             "prompt": prompt,
             "evaluation": {
-                "Fluency": fluency,
-                "Consistency": consistency,
-                "Coherence": coherence,
-                "Relevance": relevance
+                "Overall": overall,
             },
             "level": "turn-level" if response else "dialog-level"
         })
+        max_request_per_minute = 10
+        time.sleep(60 / max_request_per_minute)
 
     with open(output_path, "w") as f:
         json.dump(results, f, indent=4)

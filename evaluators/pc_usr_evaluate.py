@@ -2,7 +2,7 @@ import json
 from g_eval import GEvalAPI
 import time
 
-def process_tc_usr_data(file_path, g_eval, single_template_path, output_path):
+def process_pc_usr_data(file_path, g_eval, single_template_path, output_path):
     single_template = g_eval.load_prompt_template(single_template_path)
 
     with open(file_path, "r") as f:
@@ -32,11 +32,11 @@ def process_tc_usr_data(file_path, g_eval, single_template_path, output_path):
 
             overall = None
             for evaluation in evaluations:
-                if "Overall" in evaluation and ":" in evaluation:
-                    try:
-                        overall = int(evaluation.split(":")[1].strip())
-                    except ValueError:
-                        print(f"Errore nel parsing di Overall: {evaluation}")
+              if "Overall" in evaluation and ":" in evaluation:
+                try:
+                  overall = int(evaluation.split(":")[1].strip())
+                except ValueError:
+                  print(f"Errore nel parsing di Overall: {evaluation}")
             
             results.append({
                 "context": full_conversation,
@@ -45,7 +45,7 @@ def process_tc_usr_data(file_path, g_eval, single_template_path, output_path):
                 "overall_score": overall_score,
                 "prompt": prompt,
                 "evaluation": {
-                    "Overall": overall,
+                  "Overall": overall,
                 },
                 "level": "turn-level" if response else "dialog-level"
             })
