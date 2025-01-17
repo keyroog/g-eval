@@ -95,6 +95,7 @@ def run_test_convai2(input_file, full_template_path, output_file, offset_file, a
         try:
             dialog = example['dialog']
             if len(dialog) > 1 and example['eval_score'] is not None:
+                print(f"Elaborazione dialogo {dialog_id + 1}/{len(convai2_data)}...")
                 # Costruzione del contesto del dialogo
                 dialog_text = "\n".join([turn['text'] for turn in dialog])
                 conversation = " ".join(dialog_text.split("\n"))
@@ -149,6 +150,7 @@ def run_test_convai2(input_file, full_template_path, output_file, offset_file, a
                 API_KEY = get_current_api_key(api_keys_data)
                 g_eval = GEvalAPI(api_key=API_KEY, model=MODEL)
                 print(f"Nuova API key selezionata: {API_KEY}")
+                break
             else:
                 save_offset(dialog_id, offset_file)
                 break
