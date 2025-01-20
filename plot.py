@@ -19,12 +19,14 @@ def calculate_correlations(data):
     model_scores = []
 
     for entry in data:
-        human_score = entry.get("overall_score")
-        model_score = entry.get("evaluation", {}).get("Overall")
+        #evaluate only dialog level
+        if entry.get("level") == "dialog-level":
+          human_score = entry.get("overall_score")
+          model_score = entry.get("evaluation", {}).get("Overall")
 
-        if human_score is not None and model_score is not None:
-            human_scores.append(human_score)
-            model_scores.append(model_score)
+          if human_score is not None and model_score is not None:
+              human_scores.append(human_score)
+              model_scores.append(model_score)
 
     # Calcolo delle correlazioni
     pearson_corr, _ = pearsonr(human_scores, model_scores)
@@ -58,8 +60,8 @@ def plot_correlations(correlations, output_path):
 
 if __name__ == "__main__":
     # Specifica il percorso del dataset e dell'output
-    dataset_path = "results/convai/results_convai2_overall.json"
-    output_image = "convai_correlation.png"
+    dataset_path = "results/fed/results_fed_overall.json"
+    output_image = "fed_correlation_dialog_level.png"
 
     # Carica il dataset e calcola le correlazioni
     dataset = load_dataset(dataset_path)
