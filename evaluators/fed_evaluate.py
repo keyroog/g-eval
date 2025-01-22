@@ -1,5 +1,6 @@
 import json
 from g_eval import GEvalAPI
+import time
 
 def process_fed_data(file_path, g_eval, single_template_path, full_template_path, output_path):
     single_template = g_eval.load_prompt_template(single_template_path)
@@ -50,9 +51,9 @@ def process_fed_data(file_path, g_eval, single_template_path, full_template_path
             },
             "level": "turn-level" if response else "dialog-level"
         })
-        max_request_per_minute = 10
-        time.sleep(60 / max_request_per_minute)
 
     with open(output_path, "w") as f:
         json.dump(results, f, indent=4)
     print(f"Risultati salvati in {output_path}")
+
+    return results

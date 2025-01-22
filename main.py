@@ -1,76 +1,23 @@
 import json
 import random
 import argparse
+import os
+from dotenv import load_dotenv
 from g_eval import GEvalAPI
 from evaluators.fed_evaluate import process_fed_data
 from evaluators.tc_usr_evaluate import process_tc_usr_data
-import time
-import os
+from evaluators.pc_usr_evaluate import process_pc_usr_data
+from evaluators.dstc_evaluate import process_dstc_data
+from evaluators.convai_evaluate import process_convai_data
+from scipy.stats import pearsonr, spearmanr, kendalltau
 import pandas as pd
 
-def plot_scatter(df, output_folder):
-    import matplotlib.pyplot as plt
-    plt.scatter(df["evaluation_mean"], df["overall_score"], alpha=0.7, color="blue")
-    plt.title("Scatter Plot: Evaluation Mean vs Overall Score")
-    plt.xlabel("Evaluation Mean")
-    plt.ylabel("Overall Score")
-    plt.grid(alpha=0.5)
-    plt.savefig(os.path.join(output_folder, "scatter_plot.png"))
-    plt.close()
-
-def plot_boxplot(df, output_folder):
-    import matplotlib.pyplot as plt
-    plt.boxplot([df["evaluation_mean"], df["overall_score"]], labels=["Evaluation Mean", "Overall Score"], patch_artist=True)
-    plt.title("Distribuzione dei Punteggi")
-    plt.ylabel("Valori")
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.savefig(os.path.join(output_folder, "boxplot.png"))
-    plt.close()
-
-def plot_difference_histogram(df, output_folder):
-    import matplotlib.pyplot as plt
-    df["difference"] = abs(df["evaluation_mean"] - df["overall_score"])
-    plt.hist(df["difference"], bins=20, alpha=0.7, color="orange", edgecolor="black")
-    plt.title("Distribuzione delle Differenze tra Evaluation Mean e Overall Score")
-    plt.xlabel("Differenza Assoluta")
-    plt.ylabel("Frequenza")
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.savefig(os.path.join(output_folder, "difference_histogram.png"))
-    plt.close()
-
-def generate_summary_table(df, results, output_folder):
-    import pandas as pd
-    summary = {
-        "Metric": ["Pearson", "Spearman", "Kendall-Tau"],
-        "Value": [results["pearson"], results["spearman"], results["kendalltau"]]
-    }
-    summary_df = pd.DataFrame(summary)
-    summary_df.to_csv(os.path.join(output_folder, "summary_table.csv"), index=False)
-
-def plot_heatmap(df, output_folder):
-    import seaborn as sns
-    import matplotlib.pyplot as plt
-
-    evaluation_df = pd.DataFrame(df["evaluation"].tolist())
-    evaluation_df["overall_score"] = df["overall_score"]
-
-    correlation_matrix = evaluation_df.corr()
-    sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", cbar=True)
-    plt.title("Heatmap delle Correlazioni")
-    plt.savefig(os.path.join(output_folder, "heatmap.png"))
-    plt.close()
-
-def plot_bar_correlation(results, output_folder):
-    """
-    Crea un grafico a barre per visualizzare le correlazioni (Pearson, Spearman, Kendall-Tau),
-    aggiungendo i valori sopra ogni barra.
-    """
+def plot_distance_bars(results, output_folder):
     import matplotlib.pyplot as plt
 
     metrics = ["Pearson", "Spearman", "Kendall-Tau"]
-    values = [results["pearson"], results["spearman"], results["kendalltau"]]
+    values = [results[0], results[1], results[2]]
 
-    # Creazione del grafico a barre
     plt.bar(metrics, values, color=["blue", "orange", "green"])
     plt.title("Correlazioni tra Evaluation Mean e Overall Score")
     plt.ylabel("Valore della Correlazione")
@@ -80,79 +27,32 @@ def plot_bar_correlation(results, output_folder):
     for i, v in enumerate(values):
         plt.text(i, v + 0.02, f"{v:.4f}", ha="center", fontsize=10, color="black")
 
-    plt.savefig(os.path.join(output_folder, "correlation_bar_plot.png"))
+    plt.savefig(os.path.join(output_folder, "distance_correlation_bar_plot.png"))
     plt.close()
 
-def generate_results(input_file, output_folder):
+    print(f"Plot delle distanze salvato in {output_folder}/distance_correlation_bar_plot.png")
+
+def plot_distance_distribution(df, output_folder):
     """
-    Calcola le correlazioni (Pearson, Spearman, Kendall) tra la media dei punteggi di evaluation e overall_score.
-    Genera i risultati e li salva nella cartella specificata.
+    Genera un istogramma che mostra la distribuzione delle differenze tra evaluation_mean e overall_score.
     """
-    import os
-    import json
-    import pandas as pd
-    from scipy.stats import spearmanr, pearsonr, kendalltau
-    from prettytable import PrettyTable
+    import matplotlib.pyplot as plt
+    
+    df["distance"] = abs(df["evaluation_mean"] - df["overall_score"])
 
-    os.makedirs(output_folder, exist_ok=True)
+    plt.bar(["Distanza Media"], [df["distance"].mean()], color="purple")
+    plt.title("Distribuzione delle Differenze tra Evaluation Mean e Overall Score")
+    plt.ylabel("Valore Medio della Differenza")
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
 
-    with open(input_file, "r") as f:
-        data = json.load(f)
+    # Aggiungi l'etichetta del valore sopra la barra
+    plt.text(0, df["distance"].mean() + 0.02, f"{df['distance'].mean():.4f}", ha="center", fontsize=10, color="black")
 
-    df = pd.DataFrame(data)
-
-    df["evaluation_mean"] = df["evaluation"].apply(lambda x: sum(x.values()) / len(x))
-
-    pred_scores, human_scores = {}, {}
-
-    for _, row in df.iterrows():
-        system_id = row["system"]
-
-        if system_id not in pred_scores:
-            pred_scores[system_id] = []
-            human_scores[system_id] = []
-
-        # Aggiungi i punteggi
-        pred_scores[system_id].append(row["evaluation_mean"])
-        human_scores[system_id].append(row["overall_score"])
-
-    results = {'pearson': 0, 'spearman': 0, 'kendalltau': 0}
-    valid_systems = 0
-
-    for system_id in pred_scores:
-        pred_scores_system = pred_scores[system_id]
-        human_scores_system = human_scores[system_id]
-
-        if len(set(human_scores_system)) <= 1 or len(set(pred_scores_system)) <= 1:
-            continue
-
-        results['pearson'] += pearsonr(pred_scores_system, human_scores_system)[0]
-        results['spearman'] += spearmanr(pred_scores_system, human_scores_system)[0]
-        results['kendalltau'] += kendalltau(pred_scores_system, human_scores_system)[0]
-        valid_systems += 1
-
-    if valid_systems > 0:
-        results = {k: v / valid_systems for k, v in results.items()}
-
-    table = PrettyTable(['Pearson', 'Spearman', 'Kendall'])
-    table.add_row([round(results['pearson'], 4), round(results['spearman'], 4), round(results['kendalltau'], 4)])
-    print("Correlazioni calcolate:")
-    print(table)
-
-    with open(os.path.join(output_folder, "correlations.txt"), "w") as f:
-        f.write(str(table))
-
-    plot_scatter(df, output_folder)
-    plot_boxplot(df, output_folder)
-    plot_difference_histogram(df, output_folder)
-    generate_summary_table(df, results, output_folder)
-    plot_bar_correlation(results, output_folder)
-    print(f"Risultati generati e salvati in {output_folder}")
+    plt.savefig(os.path.join(output_folder, "distance_bar_plot.png"))
+    plt.close()
 
 def load_config():
-    import os
-    from dotenv import load_dotenv
-
+    """Carica la API key dall'ambiente"""
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
@@ -161,46 +61,92 @@ def load_config():
 
 
 def sample_data(file_path, num_records=None):
+    """Carica e campiona i dati dal file JSON."""
     with open(file_path, "r") as f:
         data = json.load(f)
-    if num_records:
-        return random.sample(data, min(num_records, len(data)))
-    return data
+    return random.sample(data, min(num_records, len(data))) if num_records else data
+
+def calculate_correlations(data):
+    """
+    Calcola le correlazioni tra overall_score e evaluation["Overall"].
+    """
+    human_scores = []
+    model_scores = []
+
+    for entry in data:
+        #evaluate only dialog level
+        if entry.get("level") == "dialog-level":
+          human_score = entry.get("overall_score")
+          model_score = entry.get("evaluation", {}).get("Overall")
+
+          if human_score is not None and model_score is not None:
+              human_scores.append(human_score)
+              model_scores.append(model_score)
+
+    # Calcolo delle correlazioni
+    pearson_corr, _ = pearsonr(human_scores, model_scores)
+    spearman_corr, _ = spearmanr(human_scores, model_scores)
+    kendall_corr, _ = kendalltau(human_scores, model_scores)
+
+    return pearson_corr, spearman_corr, kendall_corr
 
 
 def main(mode, input_file, single_template_path, full_template_path, output_file, num_records):
-    if mode in ["fed", "tc_usr"]:
-        api_key = load_config()
-        model = "gpt-4o-mini"
-        g_eval = GEvalAPI(api_key=api_key, model=model)
-    data = sample_data(input_file, num_records)
+    """
+    Esegue l'elaborazione del dataset in base alla modalità selezionata.
 
+    Args:
+        mode (str): Modalità di esecuzione (fed, tc_usr, pc_usr, dstc, convai).
+        input_file (str): Percorso al file JSON del dataset.
+        single_template_path (str): Percorso al template per risposte singole.
+        full_template_path (str): Percorso al template per dialoghi completi (solo per 'fed').
+        output_file (str): Percorso per salvare i risultati.
+        num_records (int): Numero di record da elaborare.
+    """
+    api_key = load_config()
+    model = "gpt-4o-mini"
+    g_eval = GEvalAPI(api_key=api_key, model=model)
+
+    data = sample_data(input_file, num_records)
     temp_file = "results/temp_test_data.json"
+
+    # Salva i dati campionati temporaneamente
     with open(temp_file, "w") as f:
         json.dump(data, f, indent=4)
 
-    if mode == "results":
-        generate_results(input_file, output_file)
-    elif mode == "fed":
-        process_fed_data(temp_file, g_eval, single_template_path, full_template_path, output_file)
+    if mode == "fed":
+        results = process_fed_data(temp_file, g_eval, single_template_path, full_template_path, output_file)
     elif mode == "tc_usr":
-        process_tc_usr_data(temp_file, g_eval, single_template_path, output_file)
-
+        results = process_tc_usr_data(temp_file, g_eval, single_template_path, output_file)
+    elif mode == "pc_usr":
+        results = process_pc_usr_data(temp_file, g_eval, single_template_path, output_file)
+    elif mode == "dstc":
+        results = process_dstc_data(temp_file, g_eval, full_template_path, output_file)
+    elif mode == "convai":
+        results = process_convai_data(temp_file, g_eval, full_template_path, output_file)
+    elif mode == "result":
+        results = json.load(open(input_file, "r"))
+        correlation_results = calculate_correlations(results)
+        print("\nCorrelazioni calcolate:")
+        print(f"Pearson: {correlation_results[0]}")
+        print(f"Spearman: {correlation_results[1]}")
+        print(f"Kendall-Tau: {correlation_results[2]}")
+        plot_distance_bars(correlation_results, os.path.dirname(output_file))
     else:
-        raise ValueError("Modalità non valida. Usa 'fed', 'tc_usr' o 'results'.")
+        raise ValueError("Modalità non valida. Usa 'fed', 'tc_usr', 'pc_usr', 'dstc' o 'convai'.")
 
-    print(f"Elaborazione completata. Risultati salvati in {output_file}")
+    print(f"Elaborazione completata per la modalità '{mode}'. Risultati salvati in {output_file}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Elabora i dataset fed, tc_usr o genera risultati.")
-    parser.add_argument("--mode", type=str, required=True, choices=["fed", "tc_usr", "results"],
-                        help="Modalità: 'fed', 'tc_usr' o 'results'.")
+    parser = argparse.ArgumentParser(description="Esegui la demo per i dataset di valutazione.")
+    parser.add_argument("--mode", type=str, required=True, choices=["fed", "tc_usr", "pc_usr", "dstc", "convai", "result"],
+                        help="Modalità: 'fed', 'tc_usr', 'pc_usr', 'dstc', 'convai', 'result'.")
     parser.add_argument("--input_file", type=str, required=True, help="Percorso al file JSON del dataset.")
     parser.add_argument("--single_template_path", type=str, help="Percorso al template per risposte singole.")
     parser.add_argument("--full_template_path", type=str, help="Percorso al template per dialoghi completi (solo per 'fed').")
-    parser.add_argument("--output_file", type=str, required=True, help="Percorso per salvare i risultati o la cartella dei risultati ('results').")
-    parser.add_argument("--num_records", type=int, default=None, help="Numero di record da elaborare (opzionale).")
+    parser.add_argument("--output_file", type=str, required=True, help="Percorso per salvare i risultati.")
+    parser.add_argument("--num_records", type=int, default=2, help="Numero di record da elaborare (opzionale).")
     args = parser.parse_args()
 
     main(

@@ -1,0 +1,22 @@
+You will be given a conversation between two individuals.
+
+Your task is to evaluate the overall quality of the conversation.  
+
+Please follow these instructions carefully and respond ONLY with the score in the format provided below. Do not include any additional text, comments, or explanations. If the conversation cannot be evaluated, assign a score of `0`.  
+
+Evaluation Criteria:  
+Overall Quality (1-3): Is the overall quality of the conversation satisfactory?  
+- Score 1 (Unsatisfactory): The conversation lacks coherence and relevance. Responses are disconnected, causing confusion or disruption in the interaction.  
+- Score 2 (Satisfactory): The conversation is generally coherent and relevant but may have minor issues. Some responses might not align perfectly with the context, or the flow may lose engagement at times. Overall, it remains understandable.  
+- Score 3 (Excellent): The conversation is fluid, natural, and well-aligned with the tone and intent of the participants. Each response is relevant, contributes to the discussion, and the conversation flows smoothly with clear and engaging interaction.  
+
+Evaluation Steps:  
+1. Read the conversation carefully.  
+2. Assign a score between 1 and 3 for overall quality based on the criteria above.  
+
+Dialog:
+
+{{context}}
+
+Response Format:  
+Overall Quality: <score>  
