@@ -40,6 +40,9 @@ G-EVAL è un framework avanzato per la valutazione automatica della qualità dei
 ## **Dataset**
 - **FED**: Feedback Evaluation Dataset per dialoghi open-domain.
 - **TC_USR**: Dataset focalizzato su dialoghi con valutazioni di engagingness e naturalness.
+- **PC_USR**: Dialoghi basati su informazioni di fatto.
+- **DSTC9**: Benchmark per il dialogo multi-turno.
+- **CONVAI2**: Dataset per la generazione di dialoghi open-domain.
 
 Assicurati che i dataset siano salvati nella cartella `datasets/`.
 
@@ -49,7 +52,7 @@ Assicurati che i dataset siano salvati nella cartella `datasets/`.
 
 I parametri utilizzati nello script sono i seguenti:
 
-- `--mode`: Specifica la modalità di esecuzione. Può essere uno tra `tc_usr`, `fed` o `results`.
+- `--mode`: Specifica la modalità di esecuzione (fed, tc_usr, pc_usr, dstc, convai, result).
 - `--input_file`: Percorso del file di input contenente i dati da valutare.
 - `--single_template_path`: Percorso del prompt template per la valutazione di singole risposte.
 - `--full_template_path`: Percorso del prompt template per la valutazione di dialoghi completi.
@@ -60,22 +63,52 @@ I parametri utilizzati nello script sono i seguenti:
 
 ## **Modalità di Esecuzione**
 
-### 1. **Valutazione del Dataset TC_USR**
-Esegui la valutazione di un sottoinsieme del dataset TC_USR:
-```bash
-python main.py --mode tc_usr --input_file datasets/tc_usr_data.json --single_template_path prompts/tc_usr_single_response.txt --full_template_path prompts/tc_usr_single_response.txt --output_file results/tc/results_tc_usr.json --num_records 1
-```
-
-### 2. **Valutazione del Dataset FED**
+### 1. **Valutazione del Dataset FED**
 Esegui la valutazione di un sottoinsieme del dataset FED:
 ```bash
-python main.py --mode fed --input_file datasets/fed_data.json --single_template_path prompts/fed_single_response.txt --full_template_path prompts/fed_full_dialogue.txt --output_file results/fed/results_fed.json --num_records 2
+python main.py --mode fed --input_file datasets/fed_data.json \
+--single_template_path prompts/fed_single_response.txt \
+--full_template_path prompts/fed_full_dialogue.txt \
+--output_file results/fed_results.json --num_records 2
+```
+
+### 2. **Valutazione del Dataset TC_USR**
+Esegui la valutazione di un sottoinsieme del dataset TC_USR:
+```bash
+python main.py --mode tc_usr --input_file datasets/tc_usr_data.json \
+--single_template_path prompts/tc_usr_single_response.txt \
+--output_file results/tc_usr_results.json --num_records 2
+```
+
+### 3. **Valutazione del Dataset PC_USR**
+Esegui la valutazione di un sottoinsieme del dataset PC_USR:
+```bash
+python main.py --mode pc_usr --input_file datasets/pc_usr_data.json \
+--single_template_path prompts/pc_usr_single_response.txt \
+--output_file results/pc_usr_results.json --num_records 2
+```
+
+### 4. **Valutazione del Dataset DSTC**
+Esegui la valutazione di un sottoinsieme del dataset DSTC:
+```bash
+python main.py --mode dstc --input_file datasets/dstc9_data.json \
+--full_template_path prompts/dstc_full_dialogue.txt \
+--output_file results/dstc_results.json --num_records 2
+```
+
+### 5. **Valutazione del Dataset CONVAI**
+Esegui la valutazione di un sottoinsieme del dataset CONVAI:
+```bash
+python main.py --mode convai --input_file datasets/convai2_data.json \
+--full_template_path prompts/convai_full_dialogue.txt \
+--output_file results/convai_results.json --num_records 2
 ```
 
 ### 3. **Analisi dei Risultati**
 Analizza i risultati di una valutazione completata e genera visualizzazioni:
 ```bash
-python main.py --mode results --input_file results/fed/results_fed_all.json --output_file results/analyze_output
+python main.py --mode result --input_file results/fed_results.json \
+--output_file results/analysis/
 ```
 
 ---
@@ -92,18 +125,11 @@ python main.py --mode results --input_file results/fed/results_fed_all.json --ou
 
 ## **Esempi di Output**
 ### Grafici Generati
-#### Scatter Plot
-![Scatter Plot](results/tc/scatter_plot.png)
+#### FED Turn-Level
+![FED Turn-Level](results/fed/fed_correlation_turn_level.png)
 
-#### Distribuzione delle Differenze
-![Istogramma delle Differenze](results/tc/difference_histogram.png)
-
-#### Distribuzione dei Punteggi
-![Boxplot](results/tc/boxplot.png)
-
-#### Correlazioni
-![Bar Plot delle Correlazioni](results/tc/correlation_bar_plot.png)
-
+#### FED Dialog-Level
+![FED Dialog-Level](results/tc/difference_histogram.png)
 
 ---
 
