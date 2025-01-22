@@ -129,7 +129,7 @@ python main.py --mode result --input_file results/fed_results.json \
 ![FED Turn-Level](results/fed/fed_correlation_turn_level.png)
 
 #### FED Dialog-Level
-![FED Dialog-Level](results/tc/difference_histogram.png)
+![FED Dialog-Level](results/tc/fed_correlation_dialog_level.png)
 
 ---
 
