@@ -19,14 +19,12 @@ def calculate_correlations(data):
     model_scores = []
 
     for entry in data:
-        #evaluate only dialog level
-        if entry.get("level") == "dialog-level":
-          human_score = entry.get("overall_score")
-          model_score = entry.get("evaluation", {}).get("Overall")
+        human_score = entry.get("overall_score")
+        model_score = entry.get("evaluation", {}).get("Overall")
 
-          if human_score is not None and model_score is not None:
-              human_scores.append(human_score)
-              model_scores.append(model_score)
+        if human_score is not None and model_score is not None:
+            human_scores.append(human_score)
+            model_scores.append(model_score)
 
     # Calcolo delle correlazioni
     pearson_corr, _ = pearsonr(human_scores, model_scores)

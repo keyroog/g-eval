@@ -74,8 +74,6 @@ def calculate_correlations(data):
     model_scores = []
 
     for entry in data:
-        #evaluate only dialog level
-        if entry.get("level") == "dialog-level":
           human_score = entry.get("overall_score")
           model_score = entry.get("evaluation", {}).get("Overall")
 
